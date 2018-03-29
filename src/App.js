@@ -35,8 +35,19 @@ const Square = styled.div`
 
 class App extends Component {
 
+  constructor() {
+    super();
+    this.state = {
+      turn: 'X',
+      gameOver: false
+    }
+  }
+
   clicked(event) {  
-    console.log(event);
+    event.innerText = this.state.turn;
+    this.setState({
+        turn:this.state.turn == 'X' ? 'O' : 'X'
+    })
   }
 
   render() {
