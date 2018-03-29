@@ -34,6 +34,11 @@ const Square = styled.div`
 
 
 class App extends Component {
+
+  clicked(event) {  
+    console.log(event);
+  }
+
   render() {
     return (
         <Game>
@@ -45,7 +50,7 @@ class App extends Component {
             <div id="head">
             </div>
   
-            <Board>
+            <Board onClick={(e)=>this.clicked(e.target)}>
                 <Square></Square>
                 <Square></Square>
                 <Square></Square>
