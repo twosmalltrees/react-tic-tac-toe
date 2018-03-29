@@ -19,6 +19,13 @@ const Title = styled.h1`
   padding: 1rem;
 `;
 
+const Status = styled.h2`
+  font-size: 1em;
+  text-align: center;
+  color: black;
+  padding: 1rem;
+`;
+
 const Board = styled.div`
   display:flex;
   width: 300px;
@@ -29,6 +36,10 @@ const Square = styled.div`
   width:100px;
   height: 100px;
   border:1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
 `;
 
 
@@ -42,7 +53,11 @@ class App extends Component {
     this.state = {
       turn: 'X',
       gameOver: false,
-      board: Array(9).fill('')
+      winner: undefined,
+    }
+    this.gameState = {
+      board: Array(9).fill(''),
+      totalMoves: 0
     }
   }
 
@@ -51,23 +66,60 @@ class App extends Component {
   clicked(event) {  
 
     {/* if square is not empty then do not insert x or o */}
-    if(this.state.board[event.target.dataset.square] == ''    ) {
-        this.state.board[event.target.dataset.square] = this.state.turn;
+    if(this.gameState.board[event.target.dataset.square] == '') {
+        this.gameState.board[event.target.dataset.square] = this.state.turn;
 
         event.target.innerText = this.state.turn;
 
         this.setState({
             turn: this.state.turn == 'X' ? 'O' : 'X',
-        board: this.state.board
+
         })
+        this.gameState.totalMoves++;
+
     }
-    console.log(this.state.board);
+
+    var result = this.checkWinner();
+
+    if(result == 'X') {
+      this.setState({
+        gameOver:true,
+        winner: 'X',
+        winnerLine: 'X wins'
+      });
+    }else if(result == 'O') {
+      this.setState({
+        gameOver:true,
+        winner: 'O',
+        winnerLine: 'O wins'
+      });
+    }else if(result =='draw') {
+      this.setState({
+        gameOver:true,
+        winner: 'draw',
+        winnerLine: 'Match Draw'
+      })
+    }
+  }
+
+  checkWinner() {
+      var moves = [[0,3,6], [1,4,7], [2,5,8], [0,1,2], [3,4,5], [6,7,8], [0,4,8], [2,4,6]]
+      var board = this.gameState.board;
+      for(let i=0;i<moves.length;i++) {
+        if(board[moves[i][0]] == board[moves[i][1]] && board[moves[i][1]] == board[moves[i][2]]) {
+          return board[moves[i][0]];
+        }
+      }
+
+      console.log(this.gameState.totalMoves);
+      if(this.gameState.totalMoves == 9) {
+        return 'draw';
+      } 
   }
 
   render() {
     return (
         <Game>
-
             <Title>
               Tic Tac Toe
             </Title>
@@ -87,6 +139,8 @@ class App extends Component {
                 <Square data-square="7"></Square>
                 <Square data-square="8"></Square>
             </Board>
+
+            <Status>{this.state.winnerLine}</Status>
         </Game>
     );
   }
