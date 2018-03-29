@@ -5,12 +5,18 @@ import styled from 'styled-components';
 import './App.css';
 
 
+const Game = styled.div`
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
 const Title = styled.h1`
   font-size: 1.5em;
-  text-align: left;
+  text-align: center;
   color: #2B7DE6FF;
   padding: 1rem;
-  margin-left:4.5rem;
 `;
 
 const Board = styled.div`
@@ -30,12 +36,12 @@ const Square = styled.div`
 class App extends Component {
   render() {
     return (
-        <div id="game">
+        <Game>
 
             <Title>
               Tic Tac Toe
             </Title>
-            
+
             <div id="head">
             </div>
   
@@ -50,7 +56,7 @@ class App extends Component {
                 <Square></Square>
                 <Square></Square>
             </Board>
-        </div>
+        </Game>
     );
   }
 }
