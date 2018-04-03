@@ -77,8 +77,6 @@ class App extends Component {
     if(this.state.board[event.target.dataset.square] == '') {
         this.state.board[event.target.dataset.square] = this.state.turn;
 
-        event.target.innerText = this.state.turn;
-
         
         this.state.turn = this.state.turn == 'X' ? 'O' : 'X',
 
@@ -156,15 +154,15 @@ class App extends Component {
             
             {/* create the board and click event to place a move inside a square */}
             <Board onClick={(e)=>this.clicked(e)}>
-                <Square data-square="0"></Square>
-                <Square data-square="1"></Square>
-                <Square data-square="2"></Square>
-                <Square data-square="3"></Square>
-                <Square data-square="4"></Square>
-                <Square data-square="5"></Square>
-                <Square data-square="6"></Square>
-                <Square data-square="7"></Square>
-                <Square data-square="8"></Square>
+                <Square data-square="0">{this.state.board[0]}</Square>
+                <Square data-square="1">{this.state.board[1]}</Square>
+                <Square data-square="2">{this.state.board[2]}</Square>
+                <Square data-square="3">{this.state.board[3]}</Square>
+                <Square data-square="4">{this.state.board[4]}</Square>
+                <Square data-square="5">{this.state.board[5]}</Square>
+                <Square data-square="6">{this.state.board[6]}</Square>
+                <Square data-square="7">{this.state.board[7]}</Square>
+                <Square data-square="8">{this.state.board[8]}</Square>
             </Board>
 
             <Status>{this.state.winnerLine}</Status>
