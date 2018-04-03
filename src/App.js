@@ -58,51 +58,56 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
+      winner: undefined,
       turn: 'X',
       gameOver: false,
-      winner: undefined,
-    }
-    this.gameState = {
       board: Array(9).fill(''),
-      totalMoves: 0
+      totalMoves: 0,
     }
+
   }
 
 
   /* logic for making a move for click event */
   clicked(event) {  
 
+    if(this.state.gameOver) return;
+
     {/* if square is not empty then do not insert x or o */}
-    if(this.gameState.board[event.target.dataset.square] == '') {
-        this.gameState.board[event.target.dataset.square] = this.state.turn;
+    if(this.state.board[event.target.dataset.square] == '') {
+        this.state.board[event.target.dataset.square] = this.state.turn;
 
         event.target.innerText = this.state.turn;
 
-        this.setState({
-            turn: this.state.turn == 'X' ? 'O' : 'X',
+        
+        this.state.turn = this.state.turn == 'X' ? 'O' : 'X',
 
-        })
-        this.gameState.totalMoves++;
+     
+        this.state.totalMoves++;
 
     }
 
     var result = this.checkWinner();
 
     if(result == 'X') {
+      this.state.gameOver = true;
       this.setState({
-        gameOver:true,
         winner: 'X',
         winnerLine: 'X wins',
-        xScore: +1
+        xScore: +1,
       });
+
     }else if(result == 'O') {
+      this.state.gameOver = true;
       this.setState({
         gameOver:true,
         winner: 'O',
         winnerLine: 'O wins',
         oScore: +1
       });
+
     }else if(result =='draw') {
+      this.state.gameOver = true;
       this.setState({
         gameOver:true,
         winner: 'draw',
@@ -112,17 +117,29 @@ class App extends Component {
     }
   }
 
+  handleReset(){
+        console.log("RESET");
+        this.setState({
+          winner: undefined,
+          turn: 'X',
+          gameOver: false,
+          board: Array(9).fill(''),
+          totalMoves: 0,
+        })
+        Square.innerText = '';
+    };
+
   checkWinner() {
       var moves = [[0,3,6], [1,4,7], [2,5,8], [0,1,2], [3,4,5], [6,7,8], [0,4,8], [2,4,6]]
-      var board = this.gameState.board;
+      var board = this.state.board;
       for(let i=0;i<moves.length;i++) {
         if(board[moves[i][0]] == board[moves[i][1]] && board[moves[i][1]] == board[moves[i][2]]) {
           return board[moves[i][0]];
         }
       }
 
-      console.log(this.gameState.totalMoves);
-      if(this.gameState.totalMoves == 9) {
+      console.log(this.state.totalMoves);
+      if(this.state.totalMoves == 9) {
         return 'draw';
       } 
   }
@@ -154,6 +171,10 @@ class App extends Component {
             <Score>X points: {this.state.xScore}</Score>
             <Score>O points: {this.state.oScore}</Score>
             <Score>Draws: {this.state.dScore}</Score>
+
+            <div className="reset">
+                    <button onClick={() => this.handleReset()} className="resetButton">RESET</button>
+            </div>
 
         </Game>
     );
