@@ -26,6 +26,13 @@ const Status = styled.h2`
   padding: 1rem;
 `;
 
+const Score = styled.h2`
+  font-size: 1em;
+  text-align: center;
+  color: black;
+  padding: 1rem;
+`;
+
 const Board = styled.div`
   display:flex;
   width: 300px;
@@ -85,19 +92,22 @@ class App extends Component {
       this.setState({
         gameOver:true,
         winner: 'X',
-        winnerLine: 'X wins'
+        winnerLine: 'X wins',
+        xScore: +1
       });
     }else if(result == 'O') {
       this.setState({
         gameOver:true,
         winner: 'O',
-        winnerLine: 'O wins'
+        winnerLine: 'O wins',
+        oScore: +1
       });
     }else if(result =='draw') {
       this.setState({
         gameOver:true,
         winner: 'draw',
-        winnerLine: 'Match Draw'
+        winnerLine: 'Match Draw',
+        dScore: +1
       })
     }
   }
@@ -141,6 +151,10 @@ class App extends Component {
             </Board>
 
             <Status>{this.state.winnerLine}</Status>
+            <Score>X points: {this.state.xScore}</Score>
+            <Score>O points: {this.state.oScore}</Score>
+            <Score>Draws: {this.state.dScore}</Score>
+
         </Game>
     );
   }
